@@ -1,5 +1,6 @@
-let parrafo = document.querySelector("p");
-parrafo.innerHTML = "Indica un número de 1 al 10";
+let numeroSecreto = 0;
+let intentos = 0;
+console.log(numeroSecreto);
 
 function asignarTextoElemento(elemento, texto) {
   let elementoHTML = document.querySelector(elemento);
@@ -7,10 +8,48 @@ function asignarTextoElemento(elemento, texto) {
   return;
 }
 
-function intentoDeUsuario() {
-  alert("click");
+function verificarIntento() {
+  let numeroUsuario = parseInt(document.getElementById("valorUsuario").value);
+  console.log(intentos);
+
+  if (numeroUsuario === numeroSecreto) {
+    asignarTextoElemento(
+      "p",
+      `Acertaste el número en ${intentos} ${intentos === 1 ? "vez" : "veces"}`
+    );
+    document.getElementById("reiniciar").removeAttribute("disabled");
+  } else {
+    if (numeroUsuario > numeroSecreto) {
+      asignarTextoElemento("p", "El número secreto es menor");
+    } else {
+      asignarTextoElemento("p", "El número secreto es mayor");
+    }
+    intentos++;
+    limpiarCaja();
+  }
+
+  return;
 }
 
-function generarNumeroSecreto() {}
+function limpiarCaja() {
+  document.querySelector("#valorUsuario").value = "";
+}
 
-asignarTextoElemento("h1", "Juego del numero secreto");
+function generarNumeroSecreto() {
+  return Math.floor(Math.random() * 10) + 1;
+}
+
+function condicionesIniciales() {
+  asignarTextoElemento("h1", "Juego del numero secreto");
+  asignarTextoElemento("p", "Indica un número de 1 al 10");
+  numeroSecreto = generarNumeroSecreto();
+  intentos = 1;
+}
+
+function reiniciarJuego() {
+  limpiarCaja();
+  condicionesIniciales();
+  document.querySelector("#reiniciar").setAttribute("disabled", "true");
+}
+
+condicionesIniciales();
